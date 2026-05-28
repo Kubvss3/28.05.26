@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3. Rocznica — Kuba & Amelka 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8647a;
+    --rose-light: #fce8ec;
+    --rose-pale: #fff5f7;
+    --blush: #f9b8c6;
+    --peach: #fdd5c0;
+    --gold: #c9965a;
+    --gold-light: #fdf3e3;
+    --text-dark: #3a2030;
+    --text-mid: #7a4a5a;
+    --text-soft: #b07080;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--rose-pale);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,245,247,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #ffd0da;
+    padding: 14px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  nav .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--rose);
+    text-decoration: none;
+  }
+  nav ul { list-style: none; display: flex; gap: 24px; }
+  nav ul li a {
+    text-decoration: none;
+    color: var(--text-mid);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul li a:hover, nav ul li a.active { color: var(--rose); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 100px 24px 60px;
+    background: linear-gradient(160deg, #fff5f7 0%, #fce8ec 50%, #fdd5c0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 15% 25%, rgba(232,100,122,0.1) 0%, transparent 45%),
+      radial-gradient(circle at 85% 75%, rgba(201,150,90,0.1) 0%, transparent 45%);
+  }
+
+  /* FIREWORKS */
+  .firework {
+    position: absolute;
+    pointer-events: none;
+  }
+  .spark {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    animation: spark 1.5s ease-out forwards;
+  }
+  @keyframes spark {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  .anniversary-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 20vw, 14rem);
+    color: var(--rose);
+    line-height: 1;
+    position: relative;
+    animation: fadeUp 0.8s ease both;
+    text-shadow: 0 4px 40px rgba(232,100,122,0.2);
+  }
+  .anniversary-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    color: var(--gold);
+    margin-bottom: 8px;
+    animation: fadeUp 0.8s 0.15s ease both;
+    letter-spacing: 0.05em;
+  }
+  .anniversary-sub {
+    font-size: 1rem;
+    color: var(--text-soft);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .date-pill {
+    display: inline-block;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid #ffc8d4;
+    border-radius: 999px;
+    padding: 12px 32px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--text-dark);
+    animation: fadeUp 0.8s 0.45s ease both;
+    backdrop-filter: blur(4px);
+  }
+  .date-pill strong { color: var(--rose); }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(28px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* SECTION */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--rose);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .section-title::after {
+    content:'';
+    display: block;
+    width: 60px; height: 2px;
+    background: var(--blush);
+    margin: 12px auto 0;
+    border-radius: 2px;
+  }
+
+  /* LETTER */
+  .letter-card {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #ffd0da;
+    padding: 48px 48px;
+    box-shadow: 0 8px 40px rgba(232,100,122,0.08);
+    position: relative;
+    overflow: hidden;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .letter-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px; left: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 12rem;
+    color: var(--rose-light);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .letter-body {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 2;
+    color: var(--text-dark);
+    position: relative;
+  }
+  .letter-body p { margin-bottom: 20px; }
+  .letter-sig {
+    margin-top: 32px;
+    text-align: right;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--rose);
+  }
+
+  /* REASONS */
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .reason-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #ffd0da;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(232,100,122,0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .reason-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(232,100,122,0.14);
+  }
+  .reason-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .reason-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--text-dark);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* COUNTDOWN WIDGET */
+  .countdown-section {
+    background: linear-gradient(135deg, #fce8ec, #fdd5c0);
+    border-radius: 32px;
+    margin: 0 24px;
+    padding: 60px 40px;
+    text-align: center;
+    border: 1px solid #ffc8d4;
+    max-width: 860px;
+    margin-left: auto; margin-right: auto;
+    margin-bottom: 0;
+  }
+  .countdown-section .section-title { margin-bottom: 32px; }
+  .cd-boxes {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .cd-box {
+    background: rgba(255,255,255,0.75);
+    border: 1px solid #ffc8d4;
+    border-radius: 18px;
+    padding: 20px 24px;
+    min-width: 90px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
+  .cd-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--rose);
+    line-height: 1;
+    display: block;
+  }
+  .cd-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-soft);
+    margin-top: 4px;
+    display: block;
+  }
+  .cd-msg {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 1.05rem;
+  }
+
+  /* MEMORY JAR */
+  .jar-section { padding: 80px 24px; max-width: 860px; margin: 0 auto; }
+  .jar-intro {
+    text-align: center;
+    color: var(--text-soft);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+  }
+  .jar-input-row {
+    display: flex; gap: 12px; margin-bottom: 24px;
+  }
+  .jar-input {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1.5px solid #ffd0da;
+    background: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .jar-input:focus { border-color: var(--rose); }
+  .jar-btn {
+    padding: 14px 24px;
+    border-radius: 14px;
+    border: none;
+    background: var(--rose);
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+  .jar-btn:hover { background: #c9507a; transform: scale(1.03); }
+  .jar-memories {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .memory-note {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #ffd0da;
+    padding: 16px 20px;
+    display: flex; align-items: flex-start; gap: 14px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .memory-icon { font-size: 1.5rem; min-width: 28px; }
+  .memory-body { flex: 1; }
+  .memory-text { color: var(--text-dark); font-size: 0.95rem; line-height: 1.5; }
+  .memory-meta { font-size: 0.78rem; color: var(--text-soft); margin-top: 4px; }
+  .memory-del {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-soft); font-size: 1rem; padding: 0 4px;
+    transition: color 0.15s;
+  }
+  .memory-del:hover { color: var(--rose); }
+
+  /* PHOTO YEAR STRIP */
+  .year-strip {
+    background: linear-gradient(135deg, var(--gold-light), #fff5f7);
+    border-top: 1px solid #ffd0da;
+    border-bottom: 1px solid #ffd0da;
+    padding: 64px 24px;
+  }
+  .year-strip .section-title { margin-bottom: 40px; }
+  .year-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  @media (max-width: 600px) { .year-cards { grid-template-columns: 1fr; } }
+  .year-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #ffd0da;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(232,100,122,0.07);
+    transition: transform 0.25s;
+  }
+  .year-card:hover { transform: translateY(-6px); }
+  .year-top {
+    padding: 28px 20px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--rose-light), var(--peach));
+    font-size: 3rem;
+  }
+  .year-body { padding: 20px; text-align: center; }
+  .year-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--rose);
+    margin-bottom: 6px;
+  }
+  .year-desc {
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  /* WISH BUTTONS */
+  .wishes-section {
+    padding: 80px 24px;
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .wishes-grid {
+    display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+    margin-bottom: 32px;
+  }
+  .wish-pill {
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1.5px solid var(--blush);
+    background: white;
+    color: var(--text-mid);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .wish-pill:hover, .wish-pill.done {
+    background: var(--rose);
+    color: white;
+    border-color: var(--rose);
+  }
+  .wish-pill.done::before { content: '✅ '; }
+
+  /* CONFETTI BUTTON */
+  .confetti-btn {
+    padding: 18px 48px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, var(--rose), var(--gold));
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(232,100,122,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 32px;
+  }
+  .confetti-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 14px 40px rgba(232,100,122,0.4);
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    background: white;
+    border-top: 1px solid #ffd0da;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+  }
+  footer .heart { color: var(--rose); display: inline-block; animation: hb 1.4s ease-in-out infinite; }
+  @keyframes hb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Kuba & Amelka</a>
+  <ul>
+    <li><a href="index.html">Strona główna</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+    <li><a href="rocznica.html" class="active">3. Rocznica</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="heroTop">
+  <div class="anniversary-label">Nasza</div>
+  <div class="anniversary-num">3</div>
+  <div class="anniversary-label">Rocznica</div>
+  <div class="anniversary-sub">Kuba & Amelka — trzy lata miłości</div>
+  <div class="date-pill">🎉 <strong>28 maja 2023 — 28 maja 2026</strong> 🎉</div>
+</div>
+
+<!-- LIST MIŁOSNY -->
+<div class="section">
+  <div class="section-title">List na Rocznicę 💌</div>
+  <div class="letter-card">
+    <div class="letter-body">
+      <p>Moja najdroższa Amelko / Mój najdroższy Kubo,</p>
+      <p>Trzy lata temu, dokładnie 28 maja, nasze życia splotły się w jedno. Trzy lata — 1096 dni pełnych uśmiechów, przytuleń, wspólnych chwil i każdego rodzaju szczęścia, jakie tylko można sobie wyobrazić.</p>
+      <p>Dziękuję Ci za każdy poranek, w którym budzę się wiedząc, że Ty jesteś po mojej stronie. Za każdy śmiech, który sprawił, że bóle brzucha były warte zachodu. Za każdą cichą chwilę, kiedy nie trzeba było mówić nic — bo samo bycie razem wystarczyło.</p>
+      <p>Trzy lata razem nauczyły mnie, że miłość to nie wielkie gesty — to codzienne małe „kocham Cię", to herbata zrobiona bez proszenia, to dłoń w dłoni kiedy jest trudno i wspólny śmiech kiedy jest łatwo.</p>
+      <p>Kocham Cię dziś bardziej niż rok temu, a za rok będę Cię kochać bardziej niż dziś.</p>
+    </div>
+    <div class="letter-sig">Z miłością, na zawsze — Kuba & Amelka 💕</div>
+  </div>
+</div>
+
+<!-- 3 LATA W PIGUŁCE -->
+<div class="year-strip">
+  <div class="section-title">3 Lata Razem ✨</div>
+  <div class="year-cards">
+    <div class="year-card">
+      <div class="year-top">🌱</div>
+      <div class="year-body">
+        <div class="year-num">Rok 1</div>
+        <div class="year-desc">Pierwsze wspólne chwile, pierwsze przygody, pierwsze „kocham Cię". Odkrywanie siebie nawzajem. 28.05.2023</div>
+      </div>
+    </div>
+    <div class="year-card">
+      <div class="year-top">🌸</div>
+      <div class="year-body">
+        <div class="year-num">Rok 2</div>
+        <div class="year-desc">Pogłębienie miłości, nowe wspomnienia, pierwsza rocznica pełna wzruszeń. Razem przez wszystko. 28.05.2024</div>
+      </div>
+    </div>
+    <div class="year-card">
+      <div class="year-top">🌹</div>
+      <div class="year-body">
+        <div class="year-num">Rok 3</div>
+        <div class="year-desc">Trzy lata miłości, dojrzałości i pięknych planów na przyszłość. Mocniejsi niż kiedykolwiek. 28.05.2025</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POWODY MIŁOŚCI -->
+<div class="section">
+  <div class="section-title">Dlaczego Cię kocham 💖</div>
+  <div class="reasons-grid">
+    <div class="reason-card">
+      <div class="reason-icon">😂</div>
+      <div class="reason-text">Bo sprawiasz, że śmieję się nawet wtedy, kiedy nic nie jest śmieszne</div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-icon">🤗</div>
+      <div class="reason-text">Bo Twój uścisk sprawia, że cały świat znika</div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-icon">💡</div>
+      <div class="reason-text">Bo inspirujesz mnie do bycia lepszą wersją siebie</div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-icon">🌧️</div>
+      <div class="reason-text">Bo jesteś przy mnie nawet w te dni, kiedy niebo jest szare</div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-icon">✨</div>
+      <div class="reason-text">Bo potrafisz dostrzec piękno w małych, codziennych chwilach</div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-icon">🏠</div>
+      <div class="reason-text">Bo przy Tobie czuję, że jestem w domu — bez względu na to gdzie jesteśmy</div>
+    </div>
+  </div>
+</div>
+
+<!-- SŁOIK WSPOMNIEŃ -->
+<div class="jar-section">
+  <div class="section-title">Słoik Wspomnień 🫙</div>
+  <div class="jar-intro">Dodajcie tu wasze ulubione wspomnienia z trzech lat razem — niech zostają na zawsze!</div>
+  <div class="jar-input-row">
+    <input class="jar-input" id="memInput" type="text" placeholder="Wpisz wspomnienie... np. Nasz pierwszy taniec 💃" maxlength="200">
+    <button class="jar-btn" onclick="addMemory()">Dodaj 💕</button>
+  </div>
+  <div class="jar-memories" id="memoriesWrap">
+    <div class="memory-note">
+      <div class="memory-icon">💘</div>
+      <div class="memory-body">
+        <div class="memory-text">Pierwszy dzień razem — 28 maja 2023</div>
+        <div class="memory-meta">Wspomnienie nr 1</div>
+      </div>
+    </div>
+    <div class="memory-note">
+      <div class="memory-icon">🎉</div>
+      <div class="memory-body">
+        <div class="memory-text">Pierwsza rocznica — pełna wzruszeń i szczęścia!</div>
+        <div class="memory-meta">Wspomnienie nr 2</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ŻYCZENIA BUCKET LIST -->
+<div class="wishes-section">
+  <div class="section-title">Nasze Marzenia 🌟</div>
+  <p style="color:var(--text-soft);font-family:'Playfair Display',serif;font-style:italic;margin-bottom:32px;">Kliknijcie kiedy spełnione!</p>
+  <div class="wishes-grid">
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🌍 Wspólna podróż za granicę</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🌅 Zobaczyć wschód słońca razem</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🎭 Pójść razem na koncert</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🍳 Ugotować razem wielki obiad</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">⭐ Leżeć i patrzeć na gwiazdy</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">📸 Zrobić profesjonalne zdjęcia razem</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🎢 Wyjechać na romantyczny weekend</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🌊 Zobaczyć morze razem</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">💐 Niespodzianka dla drugiej połówki</button>
+    <button class="wish-pill" onclick="this.classList.toggle('done')">🎬 Domowy wieczór filmowy z popcornem</button>
+  </div>
+
+  <button class="confetti-btn" onclick="boom()">🎉 Świętuj z nami! Kliknij!</button>
+</div>
+
+<footer>
+  <p>Trzy lata miłości — Kuba & Amelka <span class="heart">❤</span></p>
+  <p style="margin-top:8px;font-size:0.8rem;opacity:0.7;"><a href="index.html" style="color:var(--rose);text-decoration:none;">← Wróć na stronę główną</a></p>
+</footer>
+
+<script>
+// MEMORY JAR
+let memCount = 2;
+function addMemory() {
+  const input = document.getElementById('memInput');
+  const text = input.value.trim();
+  if (!text) return;
+  memCount++;
+  const icons = ['💕','🌸','😊','🎉','✨','🌹','💖','🥰','🌟','💌'];
+  const icon = icons[Math.floor(Math.random() * icons.length)];
+  const el = document.createElement('div');
+  el.className = 'memory-note';
+  el.innerHTML = `
+    <div class="memory-icon">${icon}</div>
+    <div class="memory-body">
+      <div class="memory-text">${text}</div>
+      <div class="memory-meta">Wspomnienie nr ${memCount} — ${new Date().toLocaleDateString('pl-PL')}</div>
+    </div>
+    <button class="memory-del" onclick="this.closest('.memory-note').remove()" title="Usuń">✕</button>
+  `;
+  document.getElementById('memoriesWrap').appendChild(el);
+  input.value = '';
+  input.focus();
+}
+document.getElementById('memInput').addEventListener('keydown', e => { if (e.key === 'Enter') addMemory(); });
+
+// FIREWORKS / CONFETTI
+function boom() {
+  for (let i = 0; i < 6; i++) {
+    setTimeout(() => launchFirework(), i * 200);
+  }
+}
+function launchFirework() {
+  const colors = ['#e8647a','#f9b8c6','#fdd5c0','#c9965a','#f472b6','#fbbf24'];
+  const x = 15 + Math.random() * 70;
+  const y = 10 + Math.random() * 50;
+  const wrap = document.createElement('div');
+  wrap.style.cssText = `position:fixed;left:${x}vw;top:${y}vh;pointer-events:none;z-index:9999;`;
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement('div');
+    const angle = (i / 20) * Math.PI * 2;
+    const dist = 60 + Math.random() * 80;
+    s.style.cssText = `
+      position:absolute;width:6px;height:6px;border-radius:50%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      --tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;
+      animation:spark 1.2s ease-out forwards;
+    `;
+    wrap.appendChild(s);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 1400);
+}
+const sparkStyle = document.createElement('style');
+sparkStyle.textContent = `@keyframes spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}`;
+document.head.appendChild(sparkStyle);
+
+// AUTO FIREWORKS ON LOAD (today IS the anniversary!)
+const today = new Date();
+const isAnniversary = today.getMonth() === 4 && today.getDate() === 28;
+if (isAnniversary) {
+  setTimeout(() => { for(let i=0;i<8;i++) setTimeout(launchFirework, i*300); }, 800);
+}
+</script>
+</body>
+</html>

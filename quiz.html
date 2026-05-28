@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Pary — Kuba & Amelka 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8647a; --rose-light: #fce8ec; --rose-pale: #fff5f7;
+    --blush: #f9b8c6; --peach: #fdd5c0; --gold: #c9965a;
+    --text-dark: #3a2030; --text-mid: #7a4a5a; --text-soft: #b07080;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Lato',sans-serif; background:var(--rose-pale); color:var(--text-dark); min-height:100vh; }
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(255,245,247,0.93); backdrop-filter:blur(10px);
+    border-bottom:1px solid #ffd0da;
+    padding:14px 32px; display:flex; align-items:center; justify-content:space-between;
+  }
+  nav .logo { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--rose); text-decoration:none; }
+  nav ul { list-style:none; display:flex; gap:22px; flex-wrap:wrap; }
+  nav ul li a { text-decoration:none; color:var(--text-mid); font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; transition:color .2s; }
+  nav ul li a:hover, nav ul li a.active { color:var(--rose); }
+
+  .hero {
+    padding:120px 24px 48px; text-align:center;
+    background:linear-gradient(155deg,#fff5f7 0%,#fce8ec 55%,#fdd5c0 100%);
+  }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,3.8rem); color:var(--rose); margin-bottom:10px; }
+  .hero p { font-family:'Playfair Display',serif; font-style:italic; color:var(--text-soft); font-size:1.05rem; }
+
+  .quiz-wrap { max-width:680px; margin:0 auto; padding:40px 24px 80px; }
+
+  /* MODE SELECT */
+  .mode-label { text-align:center; font-size:0.8rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-soft); margin-bottom:14px; }
+  .mode-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:36px; }
+  .mode-btn {
+    padding:13px 28px; border-radius:999px; border:2px solid var(--blush);
+    background:white; color:var(--text-mid); font-family:'Playfair Display',serif;
+    font-size:1rem; cursor:pointer; transition:all .2s;
+  }
+  .mode-btn:hover, .mode-btn.active { background:var(--rose); color:white; border-color:var(--rose); box-shadow:0 6px 20px rgba(232,100,122,.28); }
+
+  /* PROGRESS */
+  .prog-row { display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-soft); margin-bottom:6px; }
+  .prog-outer { background:var(--rose-light); border-radius:999px; height:7px; margin-bottom:28px; overflow:hidden; border:1px solid #ffc8d4; }
+  .prog-inner { height:100%; background:linear-gradient(90deg,var(--blush),var(--rose)); border-radius:999px; transition:width .4s ease; }
+
+  /* QUESTION */
+  .q-card {
+    background:white; border-radius:24px; border:1px solid #ffd0da;
+    padding:36px 32px; box-shadow:0 8px 40px rgba(232,100,122,.08);
+    display:none; animation:fu .35s ease both;
+  }
+  .q-card.active { display:block; }
+  @keyframes fu { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+  .q-emoji { font-size:2.8rem; margin-bottom:12px; text-align:center; }
+  .q-cat { font-size:.75rem; text-transform:uppercase; letter-spacing:.14em; color:var(--text-soft); margin-bottom:8px; text-align:center; }
+  .q-text { font-family:'Playfair Display',serif; font-size:1.35rem; color:var(--text-dark); line-height:1.5; margin-bottom:26px; text-align:center; }
+
+  .opts { display:flex; flex-direction:column; gap:11px; }
+  .opt {
+    padding:15px 20px; border-radius:14px; border:1.5px solid #ffd0da;
+    background:var(--rose-pale); color:var(--text-dark); font-size:.95rem;
+    cursor:pointer; transition:all .18s; text-align:left; font-family:'Lato',sans-serif;
+    display:flex; align-items:center; gap:12px;
+  }
+  .opt:hover { border-color:var(--rose); background:var(--rose-light); }
+  .opt .opt-icon { font-size:1.4rem; min-width:28px; text-align:center; }
+  .opt.chosen { background:linear-gradient(135deg,#fce8ec,#fdd5c0); border-color:var(--rose); font-weight:700; color:var(--text-dark); }
+  .opt.disabled { pointer-events:none; }
+
+  .q-feedback { margin-top:15px; padding:13px 17px; border-radius:12px; font-size:.88rem; display:none; line-height:1.55; background:var(--rose-light); color:var(--text-mid); border:1px solid #ffc8d4; }
+  .q-feedback.show { display:block; }
+
+  .q-nav { display:flex; justify-content:space-between; margin-top:22px; gap:10px; }
+  .btn { padding:11px 26px; border-radius:999px; border:1.5px solid var(--rose); background:white; color:var(--rose); font-family:'Lato',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer; transition:all .18s; }
+  .btn:hover { background:var(--rose); color:white; }
+  .btn.primary { background:var(--rose); color:white; }
+  .btn.primary:hover { background:#c9507a; }
+  .btn:disabled { opacity:.32; pointer-events:none; }
+
+  /* SCOREBOARD */
+  .scoreboard {
+    display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+    margin-bottom:28px;
+  }
+  .score-chip {
+    background:white; border:1px solid #ffd0da; border-radius:16px;
+    padding:14px 24px; text-align:center; min-width:130px;
+  }
+  .score-chip-name { font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text-soft); margin-bottom:4px; }
+  .score-chip-num { font-family:'Playfair Display',serif; font-size:2rem; color:var(--rose); line-height:1; }
+
+  /* RESULT */
+  .result { display:none; background:white; border-radius:24px; border:1px solid #ffd0da; padding:48px 32px; text-align:center; box-shadow:0 8px 40px rgba(232,100,122,.09); animation:fu .5s ease both; }
+  .result.show { display:block; }
+  .result-emoji { font-size:4.5rem; margin-bottom:14px; }
+  .result-title { font-family:'Playfair Display',serif; font-size:2rem; color:var(--rose); margin-bottom:8px; }
+  .result-sub { font-family:'Playfair Display',serif; font-style:italic; color:var(--text-soft); margin-bottom:28px; font-size:1.05rem; }
+  .result-scores { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
+  .rs-card { background:var(--rose-pale); border:1px solid #ffc8d4; border-radius:18px; padding:20px 28px; text-align:center; min-width:140px; }
+  .rs-name { font-size:.8rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text-soft); margin-bottom:6px; }
+  .rs-num { font-family:'Playfair Display',serif; font-size:2.4rem; color:var(--rose); line-height:1; }
+  .rs-pts { font-size:.75rem; color:var(--text-soft); }
+  .winner-crown { font-size:2rem; }
+  .result-msg { color:var(--text-mid); line-height:1.7; max-width:420px; margin:0 auto 28px; font-size:.93rem; }
+  .restart-btn { padding:15px 40px; border-radius:999px; border:none; background:var(--rose); color:white; font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; cursor:pointer; box-shadow:0 6px 22px rgba(232,100,122,.28); transition:all .2s; }
+  .restart-btn:hover { background:#c9507a; transform:scale(1.04); }
+
+  footer { text-align:center; padding:32px 24px; background:white; border-top:1px solid #ffd0da; color:var(--text-soft); font-size:.83rem; }
+  .heart { color:var(--rose); display:inline-block; animation:hb 1.4s ease-in-out infinite; }
+  @keyframes hb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Kuba & Amelka</a>
+  <ul>
+    <li><a href="index.html">Strona główna</a></li>
+    <li><a href="quiz.html" class="active">💘 Quiz</a></li>
+    <li><a href="rocznica.html">🎉 3. Rocznica</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <h1>💘 Quiz Pary</h1>
+  <p>Kto jest słodszy, bardziej romantyczny i kto bardziej kocha? Zagrajcie razem!</p>
+</div>
+
+<div class="quiz-wrap">
+
+  <div class="mode-label">Wybierzcie tryb gry</div>
+  <div class="mode-btns">
+    <button class="mode-btn active" onclick="setMode('razem',this)">💑 Razem (oboje odpowiadacie)</button>
+    <button class="mode-btn" onclick="setMode('kuba',this)">💙 Gra Kuba</button>
+    <button class="mode-btn" onclick="setMode('amelka',this)">🌸 Gra Amelka</button>
+  </div>
+
+  <div class="prog-row"><span id="progTxt">Pytanie 1 z 12</span><span id="progPct">8%</span></div>
+  <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:8%"></div></div>
+
+  <div class="scoreboard" id="scoreboard">
+    <div class="score-chip"><div class="score-chip-name">💙 Kuba</div><div class="score-chip-num" id="kubaScore">0</div></div>
+    <div class="score-chip"><div class="score-chip-name">🌸 Amelka</div><div class="score-chip-num" id="amelkaScore">0</div></div>
+  </div>
+
+  <div id="questionsWrap"></div>
+
+  <div class="result" id="result">
+    <div class="result-emoji" id="rEmoji">🏆</div>
+    <div class="result-title" id="rTitle">Wyniki!</div>
+    <div class="result-sub" id="rSub">Koniec quizu</div>
+    <div class="result-scores" id="rScores"></div>
+    <div class="result-msg" id="rMsg"></div>
+    <button class="restart-btn" onclick="restart()">🔁 Zagrajcie jeszcze raz!</button>
+  </div>
+
+</div>
+
+<footer>
+  <p>Kuba & Amelka <span class="heart">❤</span> — <a href="index.html" style="color:var(--rose);text-decoration:none;">Strona główna</a></p>
+</footer>
+
+<script>
+let mode = 'razem';
+let cur = 0;
+let scores = { kuba: 0, amelka: 0 };
+let answered = [];
+
+function setMode(m, btn) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('scoreboard').style.display = (m === 'razem') ? 'flex' : 'none';
+}
+
+const questions = [
+  {
+    emoji: '🍭',
+    cat: 'Słodkość',
+    q: 'Kto z Was jest słodszy?',
+    opts: [
+      { icon: '💙', text: 'Kuba — bo zawsze mówi miłe rzeczy w nieoczekiwanych momentach', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — bo jej uśmiech rozświetla cały pokój', val: 'amelka' },
+      { icon: '💕', text: 'Oboje jesteście tak samo słodcy!', val: 'remis' }
+    ],
+    fun: 'Słodkość to nie tylko charakter — to też wspólne zjadanie lodów o północy! 🍦'
+  },
+  {
+    emoji: '💌',
+    cat: 'Romantyczność',
+    q: 'Kto jest bardziej romantyczny?',
+    opts: [
+      { icon: '💙', text: 'Kuba — planuje niespodzianki i pamięta o ważnych datach', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — tworzy magiczną atmosferę w każdej chwili', val: 'amelka' },
+      { icon: '🌹', text: 'Razem tworzycie idealny duet romantyczny!', val: 'remis' }
+    ],
+    fun: 'Romantyczność to umiejętność zmieniania zwykłego wieczoru w niezapomnianą chwilę! 🌙'
+  },
+  {
+    emoji: '😂',
+    cat: 'Humor',
+    q: 'Kto częściej sprawia, że pękacie ze śmiechu?',
+    opts: [
+      { icon: '💙', text: 'Kuba — jego żarty zawsze trafiają w dziesiątkę', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — jej miny i reakcje są bezcenne', val: 'amelka' },
+      { icon: '😄', text: 'Śmiech to wasza wspólna supermoc!', val: 'remis' }
+    ],
+    fun: 'Para która razem się śmieje — razem zostaje! 😂'
+  },
+  {
+    emoji: '🤗',
+    cat: 'Czułość',
+    q: 'Kto bardziej lubi się przytulać?',
+    opts: [
+      { icon: '💙', text: 'Kuba — jego uścisk to najcieplejsze miejsce na świecie', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — zawsze szuka bliskości', val: 'amelka' },
+      { icon: '💞', text: 'Oboje — jesteście urodzonym duetem przytulasów!', val: 'remis' }
+    ],
+    fun: 'Naukowcy twierdzą, że 8 uścisków dziennie to minimum dla szczęścia! 🫂'
+  },
+  {
+    emoji: '🎁',
+    cat: 'Prezenty',
+    q: 'Kto daje lepsze niespodzianki i prezenty?',
+    opts: [
+      { icon: '💙', text: 'Kuba — zawsze trafi w to czego się nie spodziewasz', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — jej prezenty są zawsze z sercem i pomysłem', val: 'amelka' },
+      { icon: '🎀', text: 'Oboje macie talent do robienia niespodzianek!', val: 'remis' }
+    ],
+    fun: 'Najlepszy prezent to czas spędzony razem — choć coś miłego zawsze miło! 💝'
+  },
+  {
+    emoji: '😤',
+    cat: 'Upór',
+    q: 'Kto jest bardziej uparty gdy ma rację? 😏',
+    opts: [
+      { icon: '💙', text: 'Kuba — nie odpuszcza dopóki nie udowodni swojego 😄', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — ma zawsze ostatnie słowo 😂', val: 'amelka' },
+      { icon: '🤝', text: 'Oboje jesteście równie zdeterminowani!', val: 'remis' }
+    ],
+    fun: 'Trochę uporu dobrze robi — byle potem razem się z tego śmiać! 😄'
+  },
+  {
+    emoji: '🌙',
+    cat: 'Nocne Marki',
+    q: 'Kto bardziej "jeden odcinek i idę spać" zmienia w maraton?',
+    opts: [
+      { icon: '💙', text: 'Kuba — zawsze "jeszcze jeden" zamienia się w cztery', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — jej wina gdy skończycie serial o 3 w nocy', val: 'amelka' },
+      { icon: '📺', text: 'Oboje jesteście równie winni! 😂', val: 'remis' }
+    ],
+    fun: 'Wspólny maraton serialowy to jedno z podstawowych praw każdej pary! 🍿'
+  },
+  {
+    emoji: '💬',
+    cat: 'Gadatliwość',
+    q: 'Kto więcej mówi "kocham Cię" w ciągu dnia?',
+    opts: [
+      { icon: '💙', text: 'Kuba — ciągle to powtarza bo ciągle tak czuje', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — wyrusza z miłosnymi wiadomościami', val: 'amelka' },
+      { icon: '💕', text: 'Oboje — bo nigdy za dużo!', val: 'remis' }
+    ],
+    fun: '"Kocham Cię" nigdy się nie zużywa — mówcie to jak najczęściej! 💕'
+  },
+  {
+    emoji: '🍕',
+    cat: 'Jedzenie',
+    q: 'Kto jest bardziej wybredny przy wyborze co dziś zjeść?',
+    opts: [
+      { icon: '💙', text: 'Kuba — "nie wiem, ty wybierz" i potem kwestionuje wybór 😂', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — zmienia zdanie trzy razy zanim zdecyduje', val: 'amelka' },
+      { icon: '🍽️', text: 'Jesteście w tym zakresie idealnie dopasowani!', val: 'remis' }
+    ],
+    fun: 'Decydowanie co zjeść to najtrudniejsze pytanie w każdym związku! 🤣'
+  },
+  {
+    emoji: '🌟',
+    cat: 'Zakochanie',
+    q: 'Kto bardziej kocha drugą osobę?',
+    opts: [
+      { icon: '💙', text: 'Kuba — kocha Amelkę ponad wszystko na świecie', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — jej miłość do Kuby jest bezgraniczna', val: 'amelka' },
+      { icon: '∞', text: 'Wasza miłość jest równa i nieskończona!', val: 'remis' }
+    ],
+    fun: 'Prawdziwa miłość nie mierzy — ona po prostu jest, każdego dnia, w każdej chwili. 💖'
+  },
+  {
+    emoji: '😴',
+    cat: 'Senność',
+    q: 'Kto zasypia szybciej przy wspólnym filmie?',
+    opts: [
+      { icon: '💙', text: 'Kuba — głowa na poduszce i już śpi 😴', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — pierwsze 10 minut i już chrapie słodko', val: 'amelka' },
+      { icon: '🎬', text: 'Oboje walczycie ze snem tak samo dzielnie!', val: 'remis' }
+    ],
+    fun: 'Zasypianie razem przy filmie to jeden z najpiękniejszych przywilejów pary! 🌙'
+  },
+  {
+    emoji: '👑',
+    cat: 'Wielkie Finałowe',
+    q: 'Kto jest ABSOLUTNYM MISTRZEM tej miłości?',
+    opts: [
+      { icon: '💙', text: 'Kuba — on jest tym wyjątkowym dla Amelki!', val: 'kuba' },
+      { icon: '🌸', text: 'Amelka — ona jest tym wyjątkowym dla Kuby!', val: 'amelka' },
+      { icon: '💑', text: 'Oboje jesteście mistrzami — bo stworzyliście coś pięknego razem!', val: 'remis' }
+    ],
+    fun: 'W miłości nie ma przegranych — są tylko dwoje szczęśliwych ludzi! 💕'
+  }
+];
+
+function buildQ() {
+  const wrap = document.getElementById('questionsWrap');
+  wrap.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card' + (i === 0 ? ' active' : '');
+    card.id = 'q' + i;
+    card.innerHTML = `
+      <div class="q-emoji">${q.emoji}</div>
+      <div class="q-cat">${q.cat}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts">
+        ${q.opts.map((o, oi) => `
+          <button class="opt" onclick="pick(${i},${oi},'${o.val}')">
+            <span class="opt-icon">${o.icon}</span>
+            <span>${o.text}</span>
+          </button>`).join('')}
+      </div>
+      <div class="q-feedback" id="fb${i}"></div>
+      <div class="q-nav">
+        <button class="btn" onclick="go(-1)" ${i===0?'disabled':''}>← Wstecz</button>
+        <button class="btn primary" id="nb${i}" onclick="${i===questions.length-1?'showResult()':'go(1)'}" disabled>
+          ${i===questions.length-1?'Zobacz wyniki 🎉':'Dalej →'}
+        </button>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function pick(qi, oi, val) {
+  const opts = document.querySelectorAll(`#q${qi} .opt`);
+  if (opts[0].classList.contains('disabled')) return;
+  opts.forEach(o => o.classList.add('disabled'));
+  opts[oi].classList.add('chosen');
+
+  if (!answered[qi]) {
+    answered[qi] = val;
+    if (val === 'kuba') scores.kuba++;
+    else if (val === 'amelka') scores.amelka++;
+    document.getElementById('kubaScore').textContent = scores.kuba;
+    document.getElementById('amelkaScore').textContent = scores.amelka;
+  }
+
+  const fb = document.getElementById('fb' + qi);
+  fb.className = 'q-feedback show';
+  fb.textContent = '💬 ' + questions[qi].fun;
+  document.getElementById('nb' + qi).disabled = false;
+}
+
+function go(dir) {
+  document.getElementById('q' + cur).classList.remove('active');
+  cur += dir;
+  document.getElementById('q' + cur).classList.add('active');
+  const pct = ((cur + 1) / questions.length) * 100;
+  document.getElementById('progBar').style.width = pct + '%';
+  document.getElementById('progTxt').textContent = `Pytanie ${cur+1} z ${questions.length}`;
+  document.getElementById('progPct').textContent = Math.round(pct) + '%';
+}
+
+function showResult() {
+  document.getElementById('q' + cur).classList.remove('active');
+  document.getElementById('progBar').style.width = '100%';
+  document.getElementById('progTxt').textContent = 'Koniec!';
+  document.getElementById('progPct').textContent = '100%';
+
+  const k = scores.kuba, a = scores.amelka;
+  const total = questions.length;
+  const remis = total - k - a;
+
+  let emoji, title, sub, msg;
+  const rScores = document.getElementById('rScores');
+  rScores.innerHTML = `
+    <div class="rs-card"><div class="rs-name">💙 Kuba</div><div class="rs-num">${k}</div><div class="rs-pts">punktów</div></div>
+    <div class="rs-card"><div class="rs-name">🌸 Amelka</div><div class="rs-num">${a}</div><div class="rs-pts">punktów</div></div>
+    <div class="rs-card"><div class="rs-name">💕 Razem</div><div class="rs-num">${remis}</div><div class="rs-pts">wspólnych</div></div>
+  `;
+
+  if (k > a) {
+    emoji = '💙👑'; title = 'Kuba wygrywa!'; sub = 'Słodszy, romantyczniejszy, wyjątkowy!';
+    msg = `Kuba zdobył ${k} punktów — w tej rundzie to on jest mistrzem słodyczy i romantyczności! Ale tak naprawdę oboje wygracie, bo macie siebie. 💕`;
+  } else if (a > k) {
+    emoji = '🌸👑'; title = 'Amelka wygrywa!'; sub = 'Słodsza, romantyczniejsza, niesamowita!';
+    msg = `Amelka zdobyła ${a} punktów — w tej rundzie to ona zgarnia tytuł najsłodszej osoby na świecie! Ale Kuba, nie poddawaj się — następnym razem będzie Twój rewanż! 💙`;
+  } else {
+    emoji = '💑👑'; title = 'REMIS — idealna para!'; sub = 'Jesteście dla siebie stworzeni!';
+    msg = `Taki sam wynik — ${k} do ${a}! To chyba dowód na to, że jesteście doskonale dopasowani. Żadne z was nie wygrywa, bo oboje już wygraliście — znajdując siebie nawzajem. 💕`;
+  }
+
+  document.getElementById('rEmoji').textContent = emoji;
+  document.getElementById('rTitle').textContent = title;
+  document.getElementById('rSub').textContent = sub;
+  document.getElementById('rMsg').textContent = msg;
+  document.getElementById('result').classList.add('show');
+
+  for (let i = 0; i < 5; i++) setTimeout(boom, i * 300);
+}
+
+function restart() {
+  cur = 0; scores = { kuba: 0, amelka: 0 }; answered = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('kubaScore').textContent = '0';
+  document.getElementById('amelkaScore').textContent = '0';
+  document.getElementById('progBar').style.width = '8%';
+  document.getElementById('progTxt').textContent = 'Pytanie 1 z 12';
+  document.getElementById('progPct').textContent = '8%';
+  buildQ();
+}
+
+function boom() {
+  const colors = ['#e8647a','#f9b8c6','#fdd5c0','#c9965a','#f472b6','#fbbf24'];
+  const x = 10 + Math.random() * 80;
+  const y = 10 + Math.random() * 60;
+  const wrap = document.createElement('div');
+  wrap.style.cssText = `position:fixed;left:${x}vw;top:${y}vh;pointer-events:none;z-index:9999;`;
+  for (let i = 0; i < 18; i++) {
+    const angle = (i / 18) * Math.PI * 2;
+    const dist = 50 + Math.random() * 90;
+    const s = document.createElement('div');
+    s.style.cssText = `position:absolute;width:7px;height:7px;border-radius:50%;background:${colors[Math.floor(Math.random()*colors.length)]};--tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;animation:sp 1.3s ease-out forwards;`;
+    wrap.appendChild(s);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 1400);
+}
+const st = document.createElement('style');
+st.textContent = '@keyframes sp{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}';
+document.head.appendChild(st);
+
+buildQ();
+</script>
+</body>
+</html>
